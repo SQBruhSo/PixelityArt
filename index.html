@@ -3,153 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PixelCraft - El mejor software de Pixel Art Online</title>
+    <title>PixelOS - Dashboard Profesional</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- BARRA DE NAVEGACIÓN GLOBAL -->
-    <nav class="global-nav">
-        <div class="nav-logo" data-view="home">🖌️ PixelCraft Online</div>
-        <div class="nav-links">
-            <span class="nav-link active" data-view="home">Proyectos</span>
-            <span class="nav-link" data-view="changelogs">Actualizaciones</span>
-        </div>
-    </nav>
-
-    <!-- SECCIÓN #HOME -->
-    <section id="view-home" class="view active">
-        <div class="view-container">
-            <div class="home-header">
-                <div>
-                    <h1>Mis Proyectos</h1>
-                    <p class="subtitle">Crea, edita y gestiona tus lienzos pixel-art gratis.</p>
-                </div>
-                <button class="btn btn-primary" id="btn-open-modal">+ Crear nuevo lienzo</button>
+    <!-- Contenedor Principal de la App -->
+    <div id="app-root" class="pixel-app">
+        
+        <!-- Barra de Navegación Lateral -->
+        <aside class="app-sidebar">
+            <div class="brand">
+                <i class="icon icon-logo"></i>
+                <span>PixelCorp</span>
             </div>
-            
-            <div class="projects-grid" id="projects-grid">
-                <!-- Se renderiza dinámicamente con JS -->
-            </div>
-        </div>
-    </section>
+            <nav class="nav-menu">
+                <button class="nav-item active" data-target="dashboard">
+                    <i class="icon icon-dashboard"></i>
+                    <span>Panel</span>
+                </button>
+                <button class="nav-item" data-target="analytics">
+                    <i class="icon icon-analytics"></i>
+                    <span>Métricas</span>
+                </button>
+                <button class="nav-item" data-target="settings">
+                    <i class="icon icon-settings"></i>
+                    <span>Ajustes</span>
+                </button>
+            </nav>
+        </aside>
 
-    <!-- SECCIÓN #STUDIO -->
-    <section id="view-studio" class="view">
-        <div class="studio-layout">
-            <!-- Barra de Herramientas Lateral Izquierda -->
-            <aside class="toolbar glass">
-                <button class="tool-btn active" data-tool="P" title="Pincel (P)">P</button>
-                <button class="tool-btn" data-tool="E" title="Borrador (E)">E</button>
-                <button class="tool-btn" data-tool="F" title="Balde de Pintura (F)">F</button>
-                <button class="tool-btn" data-tool="K" title="Color Picker (K)">K</button>
-                <div class="tool-separator"></div>
-                <button class="tool-btn" data-tool="S" title="Selección (S / S,S / S,S,S)">S</button>
-                <button class="tool-btn" data-tool="M" title="Mover (M / M,M)">M</button>
-                <button class="tool-btn" data-tool="O" title="Formas / Líneas (O / O,O)">O</button>
-                <button class="tool-btn" data-tool="Z" title="Zoom (Z)">Z</button>
-            </aside>
-
-            <!-- Área Central de Dibujo -->
-            <main class="canvas-viewport">
-                <div class="canvas-wrapper">
-                    <canvas id="pixel-canvas"></canvas>
+        <!-- Contenido Principal -->
+        <main class="app-content">
+            <header class="content-header">
+                <h1 id="page-title">Panel de Control</h1>
+                <div class="user-profile">
+                    <i class="icon icon-user"></i>
+                    <span>Admin_User</span>
                 </div>
-            </main>
+            </header>
 
-            <!-- Barra Lateral Derecha de Ajustes -->
-            <aside class="sidebar glass">
-                <div class="panel-section">
-                    <h3 class="panel-title">Color Primario</h3>
-                    <div class="color-picker-container">
-                        <input type="color" id="color-input" value="#007aff">
-                    </div>
-                </div>
+            <!-- Vistas Dinámicas -->
+            <section id="view-container" class="view-viewport">
+                <!-- El contenido se inyecta dinámicamente mediante JS -->
+            </section>
+        </main>
 
-                <div class="panel-section">
-                    <h3 class="panel-title">Herramienta Actual</h3>
-                    <div id="status-tool" class="status-box">Pincel (P)</div>
-                </div>
-
-                <div class="panel-section help-section">
-                    <h3 class="panel-title">Atajos Rápidos</h3>
-                    <ul class="shortcuts-list">
-                        <li><span>P</span> Pincel</li>
-                        <li><span>E</span> Borrador</li>
-                        <li><span>F</span> Balde</li>
-                        <li><span>K</span> Cuentagotas</li>
-                        <li><span>S / S,S / S,S,S</span> Rectángulo / Lasso / Elipse</li>
-                        <li><span>M / M,M</span> Mover Píxeles / Selección</li>
-                        <li><span>O / O,O</span> Línea / Formas</li>
-                    </ul>
-                </div>
-
-                <button class="btn btn-secondary" style="margin-top: auto; width: 100%;" data-view="home">🏠 Salir al Home</button>
-            </aside>
-        </div>
-    </section>
-
-    <!-- SECCIÓN #CHANGELOGS -->
-    <section id="view-changelogs" class="view">
-        <div class="view-container small-container">
-            <h1 class="page-title">Historial de Actualizaciones</h1>
-            <p class="subtitle" style="margin-bottom: 40px;">Novedades, mejoras y corrección de errores del software.</p>
-
-            <div class="changelog-card glass">
-                <div class="changelog-header">
-                    <h2>Versión Estable Inicial</h2>
-                    <span class="badge">v1.0.0</span>
-                </div>
-                <p class="changelog-desc">Lanzamiento de la plataforma de edición de píxeles en tiempo real.</p>
-                <ul class="changelog-list">
-                    <li><strong>Motor Canvas Optimizado:</strong> Renderizado inmediato con pixelación forzada nativa sin desenfoques de imagen.</li>
-                    <li><strong>Panel de Creación Avanzado:</strong> Selección de tamaño personalizado y tipos de fondo transparentes y sólidos.</li>
-                    <li><strong>Atajos Multi-Click:</strong> Sistema inteligente que detecta pulsaciones consecutivas de la misma tecla para alternar herramientas complejas (<kbd>S</kbd>, <kbd>M</kbd>, <kbd>O</kbd>).</li>
-                    <li><strong>IndexedDB integrado:</strong> Guardado persistente automático local de todos tus proyectos para uso sin servidores.</li>
-                </ul>
-            </div>
-        </div>
-    </section>
-
-    <!-- VENTANA MODAL: CREACIÓN DE LIENZO -->
-    <div class="modal-overlay" id="new-canvas-modal">
-        <div class="modal-content glass">
-            <h2>Nuevo Lienzo de Pixel-Art</h2>
-            <p class="modal-subtitle">Configura las dimensiones básicas del lienzo de edición.</p>
-            
-            <form id="form-create-canvas">
-                <div class="form-group">
-                    <label for="input-title">Título del Proyecto</label>
-                    <input type="text" id="input-title" value="Proyecto sin título" required placeholder="Ej. Mi Sprite">
-                </div>
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="input-width">Ancho (px)</label>
-                        <input type="number" id="input-width" value="32" min="8" max="128" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="input-height">Alto (px)</label>
-                        <input type="number" id="input-height" value="32" min="8" max="128" required>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="select-bg">Tipo de Fondo Inicial</label>
-                    <select id="select-bg">
-                        <option value="transparent">Transparente (Cuadrícula)</option>
-                        <option value="#ffffff">Blanco Sólido</option>
-                        <option value="#000000">Negro Sólido</option>
-                        <option value="#f5f5f7">Gris Claro</option>
-                    </select>
-                </div>
-
-                <div class="modal-actions">
-                    <button type="button" class="btn btn-secondary" id="btn-close-modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary">Crear Estudio</button>
-                </div>
-            </form>
-        </div>
     </div>
 
     <script src="app.js"></script>
