@@ -3,479 +3,383 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PixelOS - Sistema de Gestión Profesional</title>
+    <title>PixelOS V2 - True Pixel Art Software</title>
     <style>
-        /* --- CONFIGURACIÓN DE PÍXELES Y COLORES --- */
+        /* Paleta de colores clásica de 16-bits (Estilo Amiga/DOS) */
         :root {
-            --bg-dark: #121216;
-            --bg-panel: #1c1c24;
-            --bg-surface: #262632;
-            --border-primary: #45455b;
-            --text-main: #e2e2e9;
-            --text-muted: #787893;
-            --accent-blue: #3b82f6;
-            --accent-green: #10b981;
-            --accent-orange: #f59e0b;
+            --bg-dark: #0f1015;
+            --bg-window: #222533;
+            --bg-inner: #181a24;
+            --pixel-border: #444961;
+            --pixel-high: #ffffff;
+            --pixel-shadow: #11121a;
+            
+            --pixel-blue: #3264c8;
+            --pixel-blue-light: #6496ff;
+            --pixel-green: #329664;
+            --pixel-green-light: #64c896;
+            --pixel-orange: #d86420;
+            
+            --text: #e0e4f0;
+            --text-dark: #11121a;
+            
+            /* Multiplicador de escala del píxel */
+            --p: 4px; 
         }
 
-        /* Reset Profesional con Renderizado Pixelado */
+        /* Forzar el renderizado por componentes de píxeles crujientes */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Courier New', monospace;
+            font-family: 'MS Gothic', 'Courier New', monospace; /* Fuentes con kerning fijo y pixelado */
+            font-size: 14px;
             font-weight: bold;
             image-rendering: pixelated;
             image-rendering: crisp-edges;
             -webkit-font-smoothing: none;
+            user-select: none;
         }
 
         body {
             background-color: var(--bg-dark);
-            color: var(--text-main);
+            color: var(--text);
             height: 100vh;
-            width: 100vw;
             display: flex;
-            overflow: hidden;
-            padding: 8px; /* Margen exterior retro */
+            align-items: center;
+            justify-content: center;
+            padding: calc(var(--p) * 2);
         }
 
-        /* --- BORDES ESTILO PIXEL ART --- */
-        .pixel-border {
-            border: 4px solid var(--border-primary);
-            outline: 2px solid var(--bg-dark);
+        /* --- BORDES INTEGRALES PIXEL ART (Estilo Biselado 3D Retro) --- */
+        .px-box-out {
+            background-color: var(--bg-window);
+            box-shadow: 
+                inset var(--p) var(--p) 0 var(--pixel-high),
+                inset calc(var(--p) * -1) calc(var(--p) * -1) 0 var(--pixel-shadow),
+                0 0 0 var(--p) var(--pixel-border);
+            padding: calc(var(--p) * 3);
         }
 
-        /* --- CONTENEDOR PRINCIPAL --- */
-        #app-root {
+        .px-box-in {
+            background-color: var(--bg-inner);
+            box-shadow: 
+                inset var(--p) var(--p) 0 var(--pixel-shadow),
+                inset calc(var(--p) * -1) calc(var(--p) * -1) 0 var(--pixel-border),
+                0 0 0 var(--p) var(--pixel-shadow);
+            padding: calc(var(--p) * 2);
+        }
+
+        /* --- INTERFAZ DEL SOFTWARE --- */
+        #desktop {
             display: flex;
             width: 100%;
             height: 100%;
-            background-color: var(--bg-panel);
-            gap: 8px;
-            padding: 8px;
+            gap: calc(var(--p) * 4);
         }
 
-        /* --- BARRA LATERAL (SIDEBAR) --- */
-        .app-sidebar {
-            width: 240px;
-            background-color: var(--bg-surface);
+        /* Barra de herramientas / Sidebar */
+        .sidebar {
+            width: 200px;
             display: flex;
             flex-direction: column;
-            padding: 16px;
+            gap: calc(var(--p) * 3);
         }
 
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            font-size: 18px;
-            color: var(--text-main);
-            padding-bottom: 16px;
-            border-bottom: 4px id var(--border-primary);
-            margin-bottom: 24px;
+        .brand-title {
+            text-align: center;
+            color: var(--pixel-orange);
+            font-size: 16px;
+            text-shadow: var(--p) var(--p) 0 var(--pixel-shadow);
+            margin-bottom: var(--p);
+            letter-spacing: 2px;
         }
 
-        .nav-menu {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        /* Botones de Navegación */
-        .nav-item {
-            background-color: var(--bg-panel);
-            border: 4px solid var(--border-primary);
-            color: var(--text-muted);
-            padding: 12px;
-            display: flex;
-            align-items: center;
-            gap: 16px;
+        /* Botones Pixel-Art Reales */
+        .px-btn {
+            background-color: var(--bg-window);
+            color: var(--text);
+            border: none;
             cursor: pointer;
-            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: calc(var(--p) * 2);
+            padding: calc(var(--p) * 2);
             width: 100%;
-            transition: none; /* En pixel art las transiciones suaves rompen la estética */
+            position: relative;
+            box-shadow: 
+                inset var(--p) var(--p) 0 var(--pixel-high),
+                inset calc(var(--p) * -1) calc(var(--p) * -1) 0 var(--pixel-shadow),
+                0 0 0 var(--p) var(--pixel-border);
         }
 
-        .nav-item:hover {
-            color: var(--text-main);
-            background-color: var(--bg-surface);
-            border-color: var(--text-muted);
+        .px-btn:hover {
+            background-color: #2a2e40;
         }
 
-        .nav-item.active {
-            color: var(--bg-dark);
-            background-color: var(--accent-blue);
-            border-color: #93c5fd;
+        /* Efecto presionado físicamente en los píxeles */
+        .px-btn:active, .px-btn.active {
+            box-shadow: 
+                inset var(--p) var(--p) 0 var(--pixel-shadow),
+                inset calc(var(--p) * -1) calc(var(--p) * -1) 0 var(--pixel-high),
+                0 0 0 var(--p) var(--pixel-border);
+            padding-top: calc(var(--p) * 2.5);
+            padding-left: calc(var(--p) * 2.5);
+            background-color: var(--pixel-blue);
+            color: white;
         }
 
-        /* --- CONTENIDO PRINCIPAL --- */
-        .app-content {
+        /* Contenedor del Software de Trabajo */
+        .main-panel {
             flex: 1;
             display: flex;
             flex-direction: column;
-            background-color: var(--bg-surface);
-            padding: 20px;
-            overflow: hidden;
+            gap: calc(var(--p) * 3);
         }
 
-        .content-header {
+        .window-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding-bottom: 16px;
-            border-bottom: 4px solid var(--border-primary);
-            margin-bottom: 20px;
+            border-bottom: var(--p) solid var(--pixel-border);
+            padding-bottom: calc(var(--p) * 2);
         }
 
-        .content-header h1 {
-            font-size: 22px;
+        .window-title {
+            font-size: 16px;
             text-transform: uppercase;
         }
 
-        .user-profile {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            background: var(--bg-panel);
-            padding: 8px 12px;
-            border: 4px solid var(--border-primary);
-        }
-
-        /* Contenedor dinámico */
-        .view-viewport {
+        .view-content {
             flex: 1;
             overflow-y: auto;
         }
 
-        /* --- COMPONENTES INTERNOS DEL SOFTWARE --- */
-        .grid-layout {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 16px;
-            margin-bottom: 20px;
-        }
-
-        .pixel-card {
-            background-color: var(--bg-panel);
-            border: 4px solid var(--border-primary);
-            padding: 16px;
-        }
-
-        .pixel-card h3 {
-            color: var(--text-muted);
-            font-size: 14px;
-            margin-bottom: 8px;
-            text-transform: uppercase;
-        }
-
-        .pixel-card .value {
-            font-size: 28px;
-            color: var(--accent-green);
-        }
-
-        /* Tablas */
-        .pixel-table {
+        /* --- TABLAS Y DATOS PIXELADOS --- */
+        .pixel-grid {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 12px;
         }
 
-        .pixel-table th {
-            background-color: var(--bg-panel);
-            color: var(--text-muted);
+        .pixel-grid th {
+            background-color: var(--pixel-shadow);
+            color: var(--pixel-orange);
+            padding: calc(var(--p) * 2);
             text-align: left;
-            padding: 12px;
-            border-bottom: 4px solid var(--border-primary);
+            border: var(--p) solid var(--pixel-border);
         }
 
-        .pixel-table td {
-            padding: 12px;
-            border-bottom: 4px solid var(--border-primary);
-            background-color: rgba(0,0,0,0.1);
+        .pixel-grid td {
+            padding: calc(var(--p) * 2);
+            border: var(--p) solid var(--pixel-border);
         }
 
-        /* Formularios funcionales */
-        .pixel-form {
+        /* Inputs y Formularios de Sistema */
+        .field-group {
             display: flex;
             flex-direction: column;
-            gap: 16px;
-            max-width: 400px;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
+            gap: var(--p);
+            margin-bottom: calc(var(--p) * 3);
         }
 
         .pixel-input {
+            width: 100%;
             background-color: var(--bg-dark);
-            border: 4px solid var(--border-primary);
-            color: var(--text-main);
-            padding: 10px;
+            border: none;
+            color: var(--pixel-green-light);
+            padding: calc(var(--p) * 2);
+            box-shadow: 
+                inset var(--p) var(--p) 0 var(--pixel-shadow),
+                inset calc(var(--p) * -1) calc(var(--p) * -1) 0 var(--pixel-border);
             outline: none;
         }
 
-        .pixel-input:focus {
-            border-color: var(--accent-blue);
+        .action-btn {
+            background-color: var(--pixel-green);
+            box-shadow: 
+                inset var(--p) var(--p) 0 var(--pixel-green-light),
+                inset calc(var(--p) * -1) calc(var(--p) * -1) 0 var(--pixel-shadow),
+                0 0 0 var(--p) var(--pixel-border);
+            color: var(--text-dark);
+            width: auto;
+            align-self: flex-start;
         }
 
-        .pixel-btn {
-            background-color: var(--accent-green);
-            border: 4px solid #6ee7b7;
-            color: var(--bg-dark);
-            padding: 12px;
-            cursor: pointer;
-            text-transform: uppercase;
-        }
-
-        .pixel-btn:active {
-            background-color: var(--bg-dark);
-            color: var(--accent-green);
-            border-color: var(--border-primary);
-        }
-
-        /* --- MOTOR DE ICONOS PIXEL ART (100% CSS) --- */
-        /* Cada punto en box-shadow representa 1 píxel real amplificado */
+        /* --- ICONOS HECHOS CON BOX-SHADOW (Grosor pixel-art real) --- */
         .px-icon {
             display: inline-block;
-            width: 3px;
-            height: 3px;
+            width: var(--p);
+            height: var(--p);
             background: transparent;
         }
 
-        /* Icono de Logo (Corona/M) */
-        .icon-logo {
+        /* Icono Casa / Panel */
+        .ic-panel {
             box-shadow: 
-                0px 0px 0 var(--accent-orange), 12px 0px 0 var(--accent-orange),
-                0px 3px 0 var(--accent-orange), 3px 3px 0 var(--accent-orange), 9px 3px 0 var(--accent-orange), 12px 3px 0 var(--accent-orange),
-                0px 6px 0 var(--accent-orange), 6px 6px 0 var(--accent-orange), 12px 6px 0 var(--accent-orange),
-                0px 9px 0 var(--accent-orange), 12px 9px 0 var(--accent-orange);
-            margin-right: 12px;
+                2px 0 0 currentColor, 4px 0 0 currentColor,
+                0 2px 0 currentColor, 2px 2px 0 currentColor, 4px 2px 0 currentColor, 6px 2px 0 currentColor,
+                0 4px 0 currentColor, 6px 4px 0 currentColor,
+                0 6px 0 currentColor, 2px 6px 0 currentColor, 4px 6px 0 currentColor, 6px 6px 0 currentColor;
+            transform: scale(2);
+            margin-right: var(--p);
         }
 
-        /* Icono de Panel (Cuadrículas) */
-        .icon-panel {
+        /* Icono Disquete / Guardar u Operaciones */
+        .ic-data {
             box-shadow: 
-                0px 0px 0 currentColor, 3px 0px 0 currentColor, 9px 0px 0 currentColor, 12px 0px 0 currentColor,
-                0px 3px 0 currentColor, 3px 3px 0 currentColor, 9px 3px 0 currentColor, 12px 3px 0 currentColor,
-                0px 9px 0 currentColor, 3px 9px 0 currentColor, 9px 9px 0 currentColor, 12px 9px 0 currentColor,
-                0px 12px 0 currentColor, 3px 12px 0 currentColor, 9px 12px 0 currentColor, 12px 12px 0 currentColor;
+                0 0 0 currentColor, 2px 0 0 currentColor, 4px 0 0 currentColor, 6px 0 0 #ff6464,
+                0 2px 0 currentColor, 4px 2px 0 currentColor, 6px 2px 0 currentColor,
+                0 4px 0 currentColor, 2px 4px 0 currentColor, 4px 4px 0 currentColor, 6px 4px 0 currentColor,
+                0 6px 0 currentColor, 2px 6px 0 currentColor, 4px 6px 0 currentColor, 6px 6px 0 currentColor;
+            transform: scale(2);
+            margin-right: var(--p);
         }
 
-        /* Icono de Métricas (Gráfico de barras) */
-        .icon-metrics {
+        /* Icono Llave / Configuración */
+        .ic-config {
             box-shadow: 
-                0px 12px 0 currentColor, 3px 9px 0 currentColor, 3px 12px 0 currentColor,
-                6px 6px 0 currentColor, 6px 9px 0 currentColor, 6px 12px 0 currentColor,
-                9px 3px 0 currentColor, 9px 6px 0 currentColor, 9px 9px 0 currentColor, 9px 12px 0 currentColor,
-                12px 0px 0 currentColor, 12px 3px 0 currentColor, 12px 6px 0 currentColor, 12px 9px 0 currentColor, 12px 12px 0 currentColor;
-        }
-
-        /* Icono de Ajustes (Herramienta/Tuerca) */
-        .icon-settings {
-            box-shadow: 
-                3px 0px 0 currentColor, 6px 0px 0 currentColor, 9px 0px 0 currentColor,
-                0px 3px 0 currentColor, 12px 3px 0 currentColor,
-                0px 6px 0 currentColor, 6px 6px 0 currentColor, 12px 6px 0 currentColor,
-                0px 9px 0 currentColor, 12px 9px 0 currentColor,
-                3px 12px 0 currentColor, 6px 12px 0 currentColor, 9px 12px 0 currentColor;
-        }
-
-        /* Icono de Usuario (Busto) */
-        .icon-user {
-            box-shadow: 
-                6px 0px 0 currentColor, 9px 0px 0 currentColor,
-                6px 3px 0 currentColor, 9px 3px 0 currentColor,
-                3px 9px 0 currentColor, 6px 9px 0 currentColor, 9px 9px 0 currentColor, 12px 9px 0 currentColor,
-                0px 12px 0 currentColor, 3px 12px 0 currentColor, 6px 12px 0 currentColor, 9px 12px 0 currentColor, 12px 12px 0 currentColor, 15px 12px 0 currentColor;
+                2px 0 0 currentColor, 4px 0 0 currentColor,
+                0 2px 0 currentColor, 6px 2px 0 currentColor,
+                2px 4px 0 currentColor, 4px 4px 0 currentColor,
+                2px 6px 0 currentColor,
+                2px 8px 0 currentColor;
+            transform: scale(2);
+            margin-right: var(--p);
         }
     </style>
 </head>
 <body>
 
-    <div id="app-root" class="pixel-border">
+    <div id="desktop" class="px-box-out">
         
-        <!-- BARRA LATERAL -->
-        <aside class="app-sidebar pixel-border">
-            <div class="brand">
-                <i class="px-icon icon-logo"></i>
-                <span>PIXEL.OS</span>
-            </div>
-            <nav class="nav-menu">
-                <button class="nav-item active" data-view="dashboard">
-                    <i class="px-icon icon-panel"></i>
-                    <span>PANEL</span>
-                </button>
-                <button class="nav-item" data-view="analytics">
-                    <i class="px-icon icon-metrics"></i>
-                    <span>MÉTRICAS</span>
-                </button>
-                <button class="nav-item" data-view="settings">
-                    <i class="px-icon icon-settings"></i>
-                    <span>SISTEMA</span>
-                </button>
-            </nav>
+        <!-- SIDEBAR -->
+        <aside class="sidebar px-box-in">
+            <div class="brand-title">PX-SYS V2</div>
+            
+            <button class="px-btn active" data-tab="db">
+                <i class="px-icon ic-panel"></i>
+                <span>PANEL</span>
+            </button>
+            <button class="px-btn" data-tab="ops">
+                <i class="px-icon ic-data"></i>
+                <span>DATA</span>
+            </button>
+            <button class="px-btn" data-tab="set">
+                <i class="px-icon ic-config"></i>
+                <span>SETUP</span>
+            </button>
         </aside>
 
-        <!-- CONTENIDO DE LA APLICACIÓN -->
-        <main class="app-content pixel-border">
-            <header class="content-header">
-                <h1 id="view-title">Cargando...</h1>
-                <div class="user-profile pixel-border">
-                    <i class="px-icon icon-user"></i>
-                    <span>OPERATOR_01</span>
-                </div>
+        <!-- AREA DE TRABAJO DEL SOFTWARE -->
+        <main class="main-panel px-box-in">
+            <header class="window-header">
+                <h1 id="view-title">SYS_PANEL</h1>
+                <span style="color: var(--pixel-green-light)">ONLINE</span>
             </header>
 
-            <!-- CONTENEDOR DINÁMICO DONDE OCURRE LA MAGIA -->
-            <section id="view-viewport" class="view-viewport">
-                <!-- Se inyecta vía JS -->
-            </section>
+            <div id="view-viewport" class="view-content">
+                <!-- Inyecciones lógicas reales aquí -->
+            </div>
         </main>
 
     </div>
 
-    <!-- LOGICA SÓLIDA DE ENRUTADO Y RENDERIZADO -->
+    <!-- CÓDIGO DE FUNCIONAMIENTO INTERACTIVO -->
     <script>
-        // Base de datos local simulada interactiva
-        const APP_DATABASE = {
-            dashboard: {
-                title: "PANEL DE CONTROL PRINCIPAL",
-                render: () => `
-                    <div class="grid-layout">
-                        <div class="pixel-card pixel-border">
-                            <h3>PROCESOS ACTIVOS</h3>
-                            <div class="value">42 NO-ERR</div>
-                        </div>
-                        <div class="pixel-card pixel-border">
-                            <h3>MEMORIA CORE</h3>
-                            <div class="value" style="color: var(--accent-blue);">71.2 GB</div>
-                        </div>
-                        <div class="pixel-card pixel-border">
-                            <h3>UPTIME</h3>
-                            <div class="value" style="color: var(--accent-orange);">99.98%</div>
-                        </div>
-                    </div>
-                    <div class="pixel-card pixel-border">
-                        <h3>REGISTRO DE OPERACIONES EN TIEMPO REAL</h3>
-                        <table class="pixel-table">
-                            <thead>
-                                <tr>
-                                    <th>NODO</th>
-                                    <th>ESTADO</th>
-                                    <th>ESTABLE</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>CENTRAL_01</td>
-                                    <td style="color: var(--accent-green);">ONLINE</td>
-                                    <td>SÍ</td>
-                                </tr>
-                                <tr>
-                                    <td>BACKUP_NODE</td>
-                                    <td style="color: var(--accent-orange);">STANDBY</td>
-                                    <td>SÍ</td>
-                                </tr>
-                            </tbody>
-                        </table>
+        const SOFTWARE_VIEWS = {
+            db: {
+                title: "DATOS_DEL_NODO",
+                html: `
+                    <p style="margin-bottom: 12px;">RENDIMIENTO DE PROCESAMIENTO CENTRAL:</p>
+                    <table class="pixel-grid">
+                        <thead>
+                            <tr>
+                                <th>SECTOR</th>
+                                <th>USO</th>
+                                <th>STATUS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>CORE_A</td>
+                                <td>45%</td>
+                                <td style="color: var(--pixel-green-light)">OK</td>
+                            </tr>
+                            <tr>
+                                <td>CORE_B</td>
+                                <td>89%</td>
+                                <td style="color: var(--pixel-orange)">WARN</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                `
+            },
+            ops: {
+                title: "REGISTROS_INTERNOS",
+                html: `
+                    <p style="margin-bottom: 12px;">HISTORIAL SÍNCRONO DEL SOFTWARE:</p>
+                    <div class="px-box-in" style="font-family: monospace; color: #a0a4b0; line-height: 1.6;">
+                        > INITIALIZING CORE ENGINE... OK<br>
+                        > LOADING INTERFACE GRAPHICS... OK<br>
+                        > BUFFER ALLOCATION AT 0x00FF4B... OK<br>
+                        > SYSTEM READY FOR USER INPUT.
                     </div>
                 `
             },
-            analytics: {
-                title: "ANÁLISIS Y ESTADÍSTICAS",
-                render: () => `
-                    <div class="pixel-card pixel-border" style="margin-bottom: 16px;">
-                        <h3>MÉTRICAS DE RENDIMIENTO GLOBAL</h3>
-                        <p style="margin: 10px 0; color: var(--text-muted);">Los datos mostrados abajo reflejan los subprocesos ejecutados por segundo de manera síncrona.</p>
-                        <table class="pixel-table">
-                            <thead>
-                                <tr>
-                                    <th>ID REGISTRO</th>
-                                    <th>TASA DE ÉXITO</th>
-                                    <th>LATENCIA</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>#9012</td>
-                                    <td>100%</td>
-                                    <td>4ms</td>
-                                </tr>
-                                <tr>
-                                    <td>#9011</td>
-                                    <td>98.4%</td>
-                                    <td>12ms</td>
-                                </tr>
-                            </tbody>
-                        </table>
+            set: {
+                title: "AJUSTES_DEL_NUCLEO",
+                html: `
+                    <div class="field-group">
+                        <label>IDENTIFICADOR DEL NODO (ID):</label>
+                        <input type="text" class="pixel-input" value="NODE_MASTER_01">
                     </div>
-                `
-            },
-            settings: {
-                title: "CONFIGURACIÓN DEL ENTORNO",
-                render: () => `
-                    <div class="pixel-card pixel-border">
-                        <h3>PARÁMETROS DEL CORE</h3>
-                        <form class="pixel-form" onsubmit="event.preventDefault(); alert('Configuración guardada en LocalStorage de forma segura.');">
-                            <div class="form-group">
-                                <label>NOMBRE DEL SERVIDOR WEB</label>
-                                <input type="text" class="pixel-input" value="PRODUCTION_MAIN_CORE">
-                            </div>
-                            <div class="form-group">
-                                <label>PUERTO DE ESCUCHA</label>
-                                <input type="number" class="pixel-input" value="8080">
-                            </div>
-                            <button type="submit" class="pixel-btn">ACTUALIZAR NODO</button>
-                        </form>
+                    <div class="field-group">
+                        <label>FRECUENCIA DE REFRESCO (MS):</label>
+                        <input type="number" class="pixel-input" value="16">
                     </div>
+                    <button class="px-btn action-btn" onclick="alert('DATOS GUARDADOS EN NÚCLEO ROM')">
+                        GUARDAR_CONFIG
+                    </button>
                 `
             }
         };
 
-        // Controlador de la aplicación
-        class SoftwareEngine {
+        class SoftwareController {
             constructor() {
-                this.buttons = document.querySelectorAll('.nav-item');
-                this.titleElement = document.getElementById('view-title');
+                this.buttons = document.querySelectorAll('.px-btn');
+                this.title = document.getElementById('view-title');
                 this.viewport = document.getElementById('view-viewport');
                 
-                this.setupEvents();
-                // Renderizar la primera pestaña por defecto de forma automática
-                this.switchView('dashboard');
+                this.initEvents();
+                this.render('db'); // Carga inicial limpia
             }
 
-            setupEvents() {
+            initEvents() {
                 this.buttons.forEach(btn => {
                     btn.addEventListener('click', (e) => {
-                        const viewTarget = e.currentTarget.getAttribute('data-view');
-                        
-                        // Quitar estado activo previo y asignar al nuevo
+                        const target = e.currentTarget.getAttribute('data-tab');
+                        if(!target) return;
+
                         this.buttons.forEach(b => b.classList.remove('active'));
                         e.currentTarget.classList.add('active');
                         
-                        this.switchView(viewTarget);
+                        this.render(target);
                     });
                 });
             }
 
-            switchView(viewKey) {
-                const viewData = APP_DATABASE[viewKey];
-                if (viewData) {
-                    this.titleElement.textContent = viewData.title;
-                    this.viewport.innerHTML = viewData.render();
-                } else {
-                    this.titleElement.textContent = "ERROR";
-                    this.viewport.innerHTML = "<p>Módulo de software no encontrado.</p>";
+            render(key) {
+                const view = SOFTWARE_VIEWS[key];
+                if(view) {
+                    this.title.textContent = view.title;
+                    this.viewport.innerHTML = view.html;
                 }
             }
         }
 
-        // Arrancar el software inmediatamente cuando el DOM cargue
+        // Ejecución inmediata
         document.addEventListener('DOMContentLoaded', () => {
-            window.AppEngine = new SoftwareEngine();
+            new SoftwareController();
         });
     </script>
 </body>
